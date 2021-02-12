@@ -151,7 +151,7 @@ lazy val micrositeSettings = {
   )
 }
 
-ThisBuild / crossScalaVersions := Seq(Scala213)
+ThisBuild / crossScalaVersions := Seq(Scala3M2, Scala3M1, Scala213, Scala212)
 ThisBuild / scalaVersion := Scala213
 ThisBuild / githubWorkflowPublishTargetBranches := Seq()
 ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.11")
