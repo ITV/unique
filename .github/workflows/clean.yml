@@ -18,9 +18,6 @@ jobs:
     steps:
       - name: Delete artifacts
         run: |
-          #!/bin/bash
-          set -x
-
           # Customize those three lines with your repository and credentials:
           REPO=${GITHUB_API_URL}/repos/${{ github.repository }}
 
@@ -40,31 +37,16 @@ jobs:
             # Get current page, get response headers in a temporary file.
             JSON=$(ghapi --dump-header $TMPFILE "$URL")
 
-            echo $JSON
-            cat $TMPFILE
-
             # Get URL of next page. Will be empty if we are at the last page.
-            #ONEA=$(grep '^Link:' "$TMPFILE")
-            #ONEB=$(grep '^Link:' "$TMPFILE" | tr ',' '\n')
-            #ONEC=$(grep '^Link:' "$TMPFILE" | tr ',' '\n' | grep 'rel="next"')
-            #ONED=$(grep '^Link:' "$TMPFILE" | tr ',' '\n' | grep 'rel="next"' | head -1)
-            #URL=$(grep '^Link:' "$TMPFILE" | tr ',' '\n' | grep 'rel="next"' | head -1 | sed -e 's/.*<//' -e 's/>.*//')
-            URL=""
-
-            echo "TWO"
-
+            URL=$(grep '^Link:' "$TMPFILE" | tr ',' '\n' | grep 'rel="next"' | head -1 | sed -e 's/.*<//' -e 's/>.*//')
             rm -f $TMPFILE
-
-            echo "ONE"
 
             # Number of artifacts on this page:
             COUNT=$(( $(jq <<<$JSON -r '.artifacts | length') ))
 
-            echo $COUNT
-
             # Loop on all artifacts on this page.
             for ((i=0; $i < $COUNT; i++)); do
-              echo "ARTIFACT!"
+
               # Get name of artifact and count instances of this name.
               name=$(jq <<<$JSON -r ".artifacts[$i].name?")
               ARTCOUNT[$name]=$(( $(( ${ARTCOUNT[$name]} )) + 1))
