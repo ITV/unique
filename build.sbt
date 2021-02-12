@@ -174,6 +174,6 @@ ThisBuild / githubWorkflowAddedJobs ++= Seq(
       WorkflowStep.Run(List("gem install jekyll -v 2.5"), name = Some("Install Jekyll")),
       WorkflowStep.Sbt(List("docs/publishMicrosite"), name = Some("Build microsite"))
     ),
-    scalas = List(Scala213)
+    scalas = List(Scala212)
   )
 )
