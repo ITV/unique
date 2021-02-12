@@ -99,4 +99,4 @@ jobs:
         run: gem install jekyll -v 2.5
 
       - name: Build microsite
-        run: sbt ++${{ matrix.scala }} docs/publishMicrosite
+        run: sbt ++${{ matrix.scala }} docs/makeMicrosite
