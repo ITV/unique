@@ -160,20 +160,20 @@ ThisBuild / githubWorkflowBuildMatrixAdditions +=
   "ci" -> List("test")
 ThisBuild / githubWorkflowBuild :=
   Seq(WorkflowStep.Sbt(List("${{ matrix.ci }}"), name = Some("Validation")))
-//ThisBuild / githubWorkflowAddedJobs ++= Seq(
-//  WorkflowJob(
-//    "microsite",
-//    "Microsite",
-//    githubWorkflowJobSetup.value.toList ::: List(
-//      WorkflowStep.Use(
-//        UseRef.Public("ruby", "setup-ruby", "v1"),
-//        name = Some("Setup Ruby"),
-//        params = Map("ruby-version" -> "2.6", "bundler-cache" -> "true")
-//      ),
-//      WorkflowStep.Run(List("gem install sass"), name = Some("Install SASS")),
-//      WorkflowStep.Run(List("gem install jekyll -v 2.5"), name = Some("Install Jekyll")),
-//      WorkflowStep.Sbt(List("docs/publishMicrosite"), name = Some("Build microsite"))
-//    ),
-//    scalas = List(Scala213)
-//  )
-//)
+ThisBuild / githubWorkflowAddedJobs ++= Seq(
+  WorkflowJob(
+    "microsite",
+    "Microsite",
+    githubWorkflowJobSetup.value.toList ::: List(
+      WorkflowStep.Use(
+        UseRef.Public("ruby", "setup-ruby", "v1"),
+        name = Some("Setup Ruby"),
+        params = Map("ruby-version" -> "2.6", "bundler-cache" -> "true")
+      ),
+      WorkflowStep.Run(List("gem install sass"), name = Some("Install SASS")),
+      WorkflowStep.Run(List("gem install jekyll -v 2.5"), name = Some("Install Jekyll")),
+      WorkflowStep.Sbt(List("docs/publishMicrosite"), name = Some("Build microsite"))
+    ),
+    scalas = List(Scala213)
+  )
+)
