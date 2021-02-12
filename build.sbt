@@ -39,12 +39,17 @@ lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
 )
 
+val Scala212 = "2.12.12"
+val Scala213 = "2.13.3"
+val Scala3M1 = "3.0.0-M1"
+val Scala3M2 = "3.0.0-M2"
+
 // General Settings
 lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
 
-  scalaVersion := "2.13.3",
-  crossScalaVersions := Seq("3.0.0-M2", "3.0.0-M1", scalaVersion.value, "2.12.12"),
+  scalaVersion := Scala213,
+  crossScalaVersions := Seq(Scala3M2, Scala3M1, scalaVersion.value, Scala212),
   scalacOptions ++= {
     if (isDotty.value) Seq.empty
     else Seq("-Yrangepos")
@@ -145,3 +150,30 @@ lazy val micrositeSettings = {
     )
   )
 }
+
+ThisBuild / crossScalaVersions := Seq(Scala213)
+ThisBuild / scalaVersion := Scala213
+ThisBuild / githubWorkflowPublishTargetBranches := Seq()
+ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.11")
+ThisBuild / githubWorkflowArtifactUpload := false
+ThisBuild / githubWorkflowBuildMatrixAdditions +=
+  "ci" -> List("test")
+ThisBuild / githubWorkflowBuild :=
+  Seq(WorkflowStep.Sbt(List("${{ matrix.ci }}"), name = Some("Validation")))
+//ThisBuild / githubWorkflowAddedJobs ++= Seq(
+//  WorkflowJob(
+//    "microsite",
+//    "Microsite",
+//    githubWorkflowJobSetup.value.toList ::: List(
+//      WorkflowStep.Use(
+//        UseRef.Public("ruby", "setup-ruby", "v1"),
+//        name = Some("Setup Ruby"),
+//        params = Map("ruby-version" -> "2.6", "bundler-cache" -> "true")
+//      ),
+//      WorkflowStep.Run(List("gem install sass"), name = Some("Install SASS")),
+//      WorkflowStep.Run(List("gem install jekyll -v 2.5"), name = Some("Install Jekyll")),
+//      WorkflowStep.Sbt(List("docs/publishMicrosite"), name = Some("Build microsite"))
+//    ),
+//    scalas = List(Scala213)
+//  )
+//)
